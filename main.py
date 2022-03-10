@@ -9,10 +9,6 @@ import pandas_datareader.data as pdr
 import math
 yf.pdr_override()
 
-
-
-
-
 def get_sma(prices,rate):
   return prices.rolling(rate).mean()
 
@@ -23,7 +19,8 @@ def Boll_band(prices,rate=20):
   boll_dw = sma - std*2  
   return boll_up,boll_dw
 
-def risk_ana(entry_price,stop_loss,strgy="norm",risk=150):
+def risk_ana(entry_price,stop_loss,strgy="norm"):
+    risk=150
     sl=entry_price-stop_loss
     no_of_share=math.ceil(risk/sl)
     if strgy=="norm":
@@ -43,12 +40,14 @@ def risk_ana(entry_price,stop_loss,strgy="norm",risk=150):
 
 
 
+
+
 start = dt.datetime.now()- dt.timedelta(days=100)
 end = dt.datetime.now() 
 
 st.title('STOCK SCREENER')
 
-strgy = st.selectbox("STRATEGY LIST",('None','ABC', '44MA', 'BOLLINGER BAND','ATH','15 MIN BUY (ABC)','15 MIN SELL (ABC)','15 MIN BUY (44MA)','15 MIN SELL (44MA)','Rising'))
+strgy = st.selectbox("STRATEGY LIST",('None','ABC', '44MA', 'BOLLINGER BAND','ATH','15 MIN BUY (ABC)','15 MIN SELL (ABC)','15 MIN BUY (44MA)','15 MIN SELL (44MA)','Trial'))
 st.write("selected",strgy)
 sc_list = st.selectbox("SCRIPT LIST",('None','Nifty 500', 'Large Cap', 'Mid Cap','Small Cap'))
 st.write("selected",sc_list)
@@ -60,29 +59,31 @@ r=st.sidebar.text_input('Risk')
 ep=st.sidebar.text_input('Entry Price')
 stop_l=st.sidebar.text_input('Stop Loss')
 try:
-    sl=int(ep)-int(stop_l)
-    no_of_share=math.ceil(int(r)/sl)
-    target1 = int(ep)+sl
-    target2 = int(ep)+(sl*2)
-    target3 = int(ep)+(sl*3)
+  sl=int(ep)-int(stop_l)
+  no_of_share=math.ceil(int(r)/sl)
+  target1 = int(ep)+sl
+  target2 = int(ep)+(sl*2)
+  target3 = int(ep)+(sl*3)
 except:
-    pass
-
+  pass
 if st.sidebar.button('Calculate'):
-    st.sidebar.text("Risk-- "+str(r)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(no_of_share)+"\n"+"TARGET 1:01 -- "+str(target1)+"\n"+"TARGET 1:02 -- "+str(target2)+"\n"+"TARGET 1:03 -- "+str(target3))
+  st.sidebar.text("Risk-- "+str(r)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(stop_l)+"\n"+"NO OF SHARES-- "+str(no_of_share)+"\n"+"TARGET 1:01 -- "+str(target1)+"\n"+"TARGET 1:02 -- "+str(target2)+"\n"+"TARGET 1:03 -- "+str(target3))
 
 
 
 
 
-nifty_500=['3MINDIA', 'ABB', 'ACC', 'AIAENG', 'APLAPOLLO', 'AUBANK', 'AARTIDRUGS', 'AARTIIND', 'AAVAS', 'ABBOTINDIA', 'ADANIENT', 'ADANIGREEN', 'ADANIPORTS', 'ATGL', 'ADANITRANS', 'ABCAPITAL', 'ABFRL', 'ADVENZYMES', 'AEGISCHEM', 'AFFLE', 'AJANTPHARM', 'ALEMBICLTD', 'APLLTD', 'ALKEM', 'ALKYLAMINE', 'ALOKINDS', 'AMARAJABAT', 'AMBER', 'AMBUJACEM', 'ANGELONE', 'ANURAS', 'APOLLOHOSP', 'APOLLOTYRE', 'ASAHIINDIA', 'ASHOKLEY', 'ASHOKA', 'ASIANPAINT', 'ASTERDM', 'ASTRAZEN', 'ASTRAL', 'ATUL', 'AUROPHARMA', 'AVANTIFEED', 'DMART', 'AXISBANK', 
-            'BASF', 'BEML', 'BSE', 'BAJAJ-AUTO', 'BAJAJCON', 'BAJAJELEC', 'BAJFINANCE', 'BAJAJFINSV', 'BAJAJHLDNG', 'BALAMINES', 'BALKRISIND', 'BALRAMCHIN', 'BANDHANBNK', 'BANKBARODA', 'BANKINDIA', 'MAHABANK', 'BATAINDIA', 'BAYERCROP', 'BERGEPAINT', 'BDL', 'BEL', 'BHARATFORG', 'BHEL', 'BPCL', 'BHARATRAS', 'BHARTIARTL', 'BIOCON', 'BIRLACORPN', 'BSOFT', 'BLUEDART', 'BLUESTARCO', 'BBTC', 'BOSCHLTD', 'BRIGADE', 'BRITANNIA', 'BURGERKING', 'CCL', 'CESC', 'CGPOWER', 'CRISIL', 'CSBBANK', 'CADILAHC', 'CANFINHOME', 'CANBK', 'CAPLIPOINT', 
-            'CGCL', 'CARBORUNIV', 'CASTROLIND', 'CEATLTD', 'CENTRALBK', 'CDSL', 'CENTURYPLY', 'CENTURYTEX', 'CERA', 'CHALET', 'CHAMBLFERT', 'CHOLAHLDNG', 'CHOLAFIN', 'CIPLA', 'CUB', 'COALINDIA', 'COCHINSHIP', 'COFORGE', 'COLPAL', 'CAMS', 'CONCOR', 'COROMANDEL', 'CREDITACC', 'CROMPTON', 'CUMMINSIND', 'CYIENT', 'DCBBANK', 'DCMSHRIRAM', 'DLF', 'DABUR', 'DALBHARAT', 'DEEPAKNTR', 'DELTACORP', 'DHANI', 'DHANUKA', 'DBL', 'DIVISLAB', 'DIXON', 'LALPATHLAB', 'DRREDDY', 'EIDPARRY', 'EIHOTEL', 'EPL', 'EDELWEISS', 'EICHERMOT', 'ELGIEQUIP', 
-            'EMAMILTD', 'ENDURANCE', 'ENGINERSIN', 'EQUITAS', 'EQUITASBNK', 'ERIS', 'ESCORTS', 'EXIDEIND', 'FDC', 'FEDERALBNK', 'FACT', 'FINEORG', 'FINCABLES', 'FINPIPE', 'FSL', 'FORTIS', 'FRETAIL', 'GAIL', 'GMMPFAUDLR', 'GALAXYSURF', 'GARFIBRES', 'GICRE', 'GILLETTE', 'GLAND', 'GLAXO', 'GLENMARK', 'GODFRYPHLP', 'GODREJAGRO', 'GODREJCP', 'GODREJIND', 'GODREJPROP', 'GRANULES', 'GRAPHITE', 'GRASIM', 'GESHIP', 'GREAVESCOT', 'GRINDWELL', 'GUJALKALI', 'GAEL', 'FLUOROCHEM', 'GUJGASLTD', 'GNFC', 'GPPL', 'GSFC', 'GSPL', 'HEG', 'HCLTECH', 
-            'HDFCAMC', 'HDFCBANK', 'HDFCLIFE', 'HFCL', 'HAPPSTMNDS', 'HATHWAY', 'HATSUN', 'HAVELLS', 'HEIDELBERG', 'HEMIPROP', 'HEROMOTOCO', 'HIKAL', 'HINDALCO', 'HGS', 'HAL', 'HINDCOPPER', 'HINDPETRO', 'HINDUNILVR', 'HINDZINC', 'POWERINDIA', 'HOMEFIRST', 'HONAUT', 'HUDCO', 'HDFC', 'ICICIBANK', 'ICICIGI', 'ICICIPRULI', 'ISEC', 'IDBI', 'IDFCFIRSTB', 'IDFC', 'IFBIND', 'IIFL', 'IIFLWAM', 'IOLCP', 'IRB', 'IRCON', 'ITC', 'ITI', 'INDIACEM', 'IBULHSGFIN', 'IBREALEST', 'INDIAMART', 'INDIANB', 'IEX', 'INDHOTEL', 'IOC', 'IOB', 'IRCTC', 'IRFC', 
-            'INDIGOPNTS', 'ICIL', 'INDOCO', 'IGL', 'INDUSTOWER', 'INDUSINDBK', 'INFIBEAM', 'NAUKRI', 'INFY', 'INGERRAND', 'INOXLEISUR', 'INTELLECT', 'INDIGO', 'IPCALAB', 'JBCHEPHARM', 'JKCEMENT', 'JKLAKSHMI', 'JKPAPER', 'JKTYRE', 'JMFINANCIL', 'JSWENERGY', 'JSWSTEEL', 'JAMNAAUTO', 'JINDALSAW', 'JSLHISAR', 'JSL', 'JINDALSTEL', 'JCHAC', 'JUBLFOOD', 'JUBLINGREA', 'JUBLPHARMA', 'JUSTDIAL', 'JYOTHYLAB', 'KPRMILL', 'KEI', 'KNRCON', 'KPITTECH', 'KRBL', 'KSB', 'KAJARIACER', 'KALPATPOWR', 'KALYANKJIL', 'KANSAINER', 'KARURVYSYA', 'KSCL', 'KEC', 'KOTAKBANK', 'L&TFH', 'LTTS', 'LICHSGFIN', 'LAOPALA', 'LAXMIMACH', 'LTI', 'LT', 'LAURUSLABS', 'LXCHEM', 'LEMONTREE', 'LINDEINDIA', 'LUPIN', 'LUXIND', 'MMTC', 'MOIL', 'MRF', 'LODHA', 'MGL', 'M&MFIN', 'M&M', 'MAHINDCIE', 'MHRIL', 'MAHLOG', 'MANAPPURAM', 'MRPL', 'MARICO', 'MARUTI', 'MASTEK', 'MFSL', 'MAXHEALTH', 'MAZDOCK', 'METROPOLIS', 'MINDTREE', 'MINDACORP', 'MINDAIND', 'MIDHANI', 'MOTILALOFS', 'MPHASIS', 'MCX', 'MUTHOOTFIN', 'NATCOPHARM', 'NBCC', 'NCC', 'NESCO', 'NHPC', 'NLCINDIA', 'NMDC', 'NOCIL', 'NTPC', 'NH', 'NATIONALUM', 'NFL', 'NAVINFLUOR', 'NAZARA', 'NESTLEIND', 'NETWORK18', 'NILKAMAL', 'NAM-INDIA', 'OBEROIRLTY', 'ONGC', 'OIL', 'OFSS', 'ORIENTELEC', 'PCBL', 'PIIND', 'PNBHOUSING', 'PNCINFRA', 'PVR', 'PAGEIND', 'PERSISTENT', 'PETRONET', 'PFIZER', 'PHOENIXLTD', 'PIDILITIND', 'PEL', 'POLYMED', 'POLYCAB', 'POLYPLEX', 'POONAWALLA', 'PFC', 'POWERGRID', 'PRAJIND', 'PRESTIGE', 'PRINCEPIPE', 'PRSMJOHNSN', 'PGHL', 'PGHH', 'PNB', 'QUESS', 'RBLBANK', 
-            'RECLTD', 'RHIM', 'RITES', 'RADICO', 'RVNL', 'RAILTEL', 'RAIN', 'RAJESHEXPO', 'RALLIS', 'RCF', 'RATNAMANI', 'REDINGTON', 'RELAXO', 'RELIANCE', 'ROSSARI', 'ROUTE', 'SBICARD', 'SBILIFE', 'SIS', 'SJVN', 'SKFINDIA', 'SRF', 'SANOFI', 'SCHAEFFLER', 'SCHNEIDER', 'SEQUENT', 'SHARDACROP', 'SFL', 'SHILPAMED', 'SCI', 'SHREECEM', 'SHRIRAMCIT', 'SRTRANSFIN', 'SIEMENS', 'SOBHA', 'SOLARINDS', 'SOLARA', 'SONACOMS', 'SONATSOFTW', 'SPANDANA', 'SPICEJET', 'STARCEMENT', 'SBIN', 'SAIL', 'SWSOLAR', 'STLTECH', 'STAR', 'SUDARSCHEM', 'SUMICHEM', 'SPARC', 'SUNPHARMA', 'SUNTV', 'SUNDARMFIN', 'SUNDRMFAST', 'SUNTECK', 'SUPRAJIT', 'SUPREMEIND', 'SUPPETRO', 'SUVENPHAR', 'SUZLON', 'SYMPHONY', 'SYNGENE', 'TCIEXP', 'TCNSBRANDS', 'TTKPRESTIG', 'TV18BRDCST', 'TVSMOTOR', 'TANLA', 'TASTYBITE', 'TATACHEM', 'TATACOFFEE', 'TATACOMM', 'TCS', 'TATACONSUM', 'TATAELXSI', 'TATAMTRDVR', 'TATAMOTORS', 'TATAPOWER', 
-            'TATASTLLP', 'TATASTEEL', 'TTML', 'TEAMLEASE', 'TECHM', 'NIACL', 'RAMCOCEM', 'THERMAX', 'THYROCARE', 'TIMKEN', 'TITAN', 'TORNTPHARM', 'TORNTPOWER', 'TRENT', 'TRIDENT', 'TRITURBINE', 'TIINDIA', 'UCOBANK', 'UFLEX', 'UPL', 'UTIAMC', 'UJJIVAN', 'UJJIVANSFB', 'ULTRACEMCO', 'UNIONBANK', 'UBL', 'MCDOWELL-N', 'VGUARD', 'VMART', 'VIPIND', 'VAIBHAVGBL', 'VAKRANGEE', 'VALIANTORG', 'VTL', 'VARROC', 'VBL', 'VEDL', 'VENKEYS', 'VINATIORGA', 'IDEA', 'VOLTAS', 'WABCOINDIA', 'WELCORP', 'WELSPUNIND', 'WESTLIFE', 'WHIRLPOOL', 'WIPRO', 'WOCKPHARMA', 'YESBANK', 'ZEEL', 'ZENSARTECH', 'ZYDUSWELL', 'ECLERX']
+  
+nifty_500=['3MINDIA', 'ABB', 'ACC', 'AIAENG', 'APLAPOLLO', 'AUBANK', 'AARTIDRUGS', 'AARTIIND', 'AAVAS', 'ABBOTINDIA', 'ADANIENT', 'ADANIGREEN', 'ADANIPORTS', 
+           'ATGL', 'ADANITRANS', 'ABCAPITAL', 'ABFRL', 'ADVENZYMES', 'AEGISCHEM', 'AFFLE', 'AJANTPHARM', 'ALEMBICLTD', 'APLLTD', 'ALKEM', 'ALKYLAMINE', 'ALOKINDS', 
+           'AMARAJABAT', 'AMBER', 'AMBUJACEM', 'ANGELONE', 'ANURAS', 'APOLLOHOSP', 'APOLLOTYRE', 'ASAHIINDIA', 'ASHOKLEY', 'ASHOKA', 'ASIANPAINT', 'ASTERDM', 'ASTRAZEN', 
+           'ASTRAL', 'ATUL', 'AUROPHARMA', 'AVANTIFEED', 'DMART', 'AXISBANK', 'BASF', 'BEML', 'BSE', 'BAJAJ-AUTO', 'BAJAJCON', 'BAJAJELEC', 'BAJFINANCE', 'BAJAJFINSV', 
+           'BAJAJHLDNG', 'BALAMINES', 'BALKRISIND', 'BALRAMCHIN', 'BANDHANBNK', 'BANKBARODA', 'BANKINDIA', 'MAHABANK', 'BATAINDIA', 'BAYERCROP', 'BERGEPAINT', 'BDL', 'BEL', 
+           'BHARATFORG', 'BHEL', 'BPCL', 'BHARATRAS', 'BHARTIARTL', 'BIOCON', 'BIRLACORPN', 'BSOFT', 'BLUEDART', 'BLUESTARCO', 'BBTC', 'BOSCHLTD', 'BRIGADE', 'BRITANNIA', 
+           'CCL', 'CESC', 'CGPOWER', 'CRISIL', 'CSBBANK', 'CANFINHOME', 'CANBK', 'CAPLIPOINT', 'CGCL', 'CARBORUNIV', 'CASTROLIND', 'CEATLTD', 'CENTRALBK', 'CDSL', 'CENTURYPLY', 'CENTURYTEX', 'CERA', 'CHALET', 'CHAMBLFERT', 'CHOLAHLDNG', 'CHOLAFIN', 'CIPLA', 'CUB', 'COALINDIA', 'COCHINSHIP', 'COFORGE', 'COLPAL', 'CAMS', 'CONCOR', 'COROMANDEL', 'CREDITACC', 'CROMPTON', 'CUMMINSIND', 'CYIENT', 'DCBBANK', 'DCMSHRIRAM', 'DLF', 'DABUR', 'DALBHARAT', 'DEEPAKNTR', 'DELTACORP', 'DHANI', 'DHANUKA', 'DBL', 'DIVISLAB', 'DIXON', 'LALPATHLAB', 'DRREDDY', 'EIDPARRY', 'EIHOTEL', 'EPL', 'EDELWEISS', 'EICHERMOT', 'ELGIEQUIP', 'EMAMILTD', 'ENDURANCE', 'ENGINERSIN', 'EQUITAS', 'EQUITASBNK', 'ERIS', 'ESCORTS', 'EXIDEIND', 'FDC', 'FEDERALBNK', 'FACT', 'FINEORG', 'FINCABLES', 'FINPIPE', 'FSL', 'FORTIS', 'FRETAIL', 'GAIL', 'GMMPFAUDLR', 'GALAXYSURF', 'GARFIBRES', 'GICRE', 'GILLETTE', 'GLAND', 'GLAXO', 'GLENMARK', 'GODFRYPHLP', 'GODREJAGRO', 'GODREJCP', 'GODREJIND', 'GODREJPROP', 'GRANULES', 'GRAPHITE', 'GRASIM', 'GESHIP', 'GREAVESCOT', 'GRINDWELL', 'GUJALKALI', 'GAEL', 'FLUOROCHEM', 'GUJGASLTD', 'GNFC', 'GPPL', 'GSFC', 'GSPL', 'HEG', 'HCLTECH', 'HDFCAMC', 'HDFCBANK', 'HDFCLIFE', 'HFCL', 'HAPPSTMNDS', 'HATHWAY', 'HATSUN', 'HAVELLS', 'HEIDELBERG', 'HEMIPROP', 'HEROMOTOCO', 'HIKAL', 'HINDALCO', 'HGS', 'HAL', 'HINDCOPPER', 'HINDPETRO', 'HINDUNILVR', 'HINDZINC', 'POWERINDIA', 'HOMEFIRST', 'HONAUT', 'HUDCO', 'HDFC', 'ICICIBANK', 'ICICIGI', 'ICICIPRULI', 'ISEC', 'IDBI', 'IDFCFIRSTB', 'IDFC', 'IFBIND', 'IIFL', 'IIFLWAM', 'IOLCP', 'IRB', 'IRCON', 'ITC', 'ITI', 'INDIACEM', 'IBULHSGFIN', 'IBREALEST', 'INDIAMART', 'INDIANB', 'IEX', 'INDHOTEL', 'IOC', 'IOB', 'IRCTC', 'IRFC', 'INDIGOPNTS', 'ICIL', 'INDOCO', 'IGL', 'INDUSTOWER', 'INDUSINDBK', 'INFIBEAM', 'NAUKRI', 'INFY', 'INGERRAND', 'INOXLEISUR', 'INTELLECT', 'INDIGO', 'IPCALAB', 'JBCHEPHARM', 'JKCEMENT', 'JKLAKSHMI', 'JKPAPER', 'JKTYRE', 'JMFINANCIL', 'JSWENERGY', 'JSWSTEEL', 'JAMNAAUTO', 'JINDALSAW', 'JSLHISAR', 'JSL', 'JINDALSTEL', 'JCHAC', 'JUBLFOOD', 'JUBLINGREA', 'JUBLPHARMA', 'JUSTDIAL', 'JYOTHYLAB', 'KPRMILL', 'KEI', 'KNRCON', 'KPITTECH', 'KRBL', 'KSB', 'KAJARIACER', 'KALPATPOWR', 'KALYANKJIL', 'KANSAINER', 'KARURVYSYA', 'KSCL', 'KEC', 'KOTAKBANK', 'L&TFH', 'LTTS', 'LICHSGFIN', 'LAOPALA', 'LAXMIMACH', 'LTI', 'LT', 'LAURUSLABS', 'LXCHEM', 'LEMONTREE', 'LINDEINDIA', 'LUPIN', 'LUXIND', 'MMTC', 'MOIL', 'MRF', 'LODHA', 'MGL', 'M&MFIN', 'M&M', 'MAHINDCIE', 'MHRIL', 'MAHLOG', 'MANAPPURAM', 'MRPL', 'MARICO', 'MARUTI', 'MASTEK', 'MFSL', 'MAXHEALTH', 'MAZDOCK', 'METROPOLIS', 'MINDTREE', 'MINDACORP', 'MINDAIND', 'MIDHANI', 'MOTILALOFS', 'MPHASIS', 'MCX', 'MUTHOOTFIN', 'NATCOPHARM', 'NBCC', 'NCC', 'NESCO', 'NHPC', 'NLCINDIA', 'NMDC', 'NOCIL', 'NTPC', 'NH', 'NATIONALUM', 'NFL', 'NAVINFLUOR', 'NAZARA', 'NESTLEIND', 'NETWORK18', 'NILKAMAL', 'NAM-INDIA', 'OBEROIRLTY', 'ONGC', 'OIL', 'OFSS', 'ORIENTELEC', 'PCBL', 'PIIND', 'PNBHOUSING', 'PNCINFRA', 'PVR', 'PAGEIND', 'PERSISTENT', 'PETRONET', 'PFIZER', 'PHOENIXLTD', 'PIDILITIND', 'PEL', 'POLYMED', 'POLYCAB', 'POLYPLEX', 'POONAWALLA', 'PFC', 'POWERGRID', 'PRAJIND', 'PRESTIGE', 'PRINCEPIPE', 'PRSMJOHNSN', 'PGHL', 'PGHH', 'PNB', 'QUESS', 'RBLBANK', 'RECLTD', 'RHIM', 'RITES', 'RADICO', 'RVNL', 'RAILTEL', 'RAIN', 'RAJESHEXPO', 
+           'RALLIS', 'RCF', 'RATNAMANI', 'REDINGTON', 'RELAXO', 'RELIANCE', 'RBA', 'ROSSARI', 'ROUTE', 'SBICARD', 'SBILIFE', 'SIS', 
+           'SJVN', 'SKFINDIA', 'SRF', 'SANOFI', 'SCHAEFFLER', 'SCHNEIDER', 'SEQUENT', 'SHARDACROP', 'SFL', 'SHILPAMED', 'SCI', 'SHREECEM', 'SHRIRAMCIT', 'SRTRANSFIN', 'SIEMENS', 'SOBHA', 'SOLARINDS', 'SOLARA', 'SONACOMS', 'SONATSOFTW', 'SPANDANA', 'SPICEJET', 'STARCEMENT', 'SBIN', 'SAIL', 'SWSOLAR', 'STLTECH', 'STAR', 'SUDARSCHEM', 'SUMICHEM', 'SPARC', 'SUNPHARMA', 'SUNTV', 'SUNDARMFIN', 'SUNDRMFAST', 'SUNTECK', 'SUPRAJIT', 'SUPREMEIND', 'SUPPETRO', 'SUVENPHAR', 'SUZLON', 'SYMPHONY', 'SYNGENE', 'TCIEXP', 'TCNSBRANDS', 'TTKPRESTIG', 'TV18BRDCST', 'TVSMOTOR', 'TANLA', 'TASTYBITE', 'TATACHEM', 'TATACOFFEE', 'TATACOMM', 'TCS', 'TATACONSUM', 'TATAELXSI', 'TATAMTRDVR', 'TATAMOTORS', 'TATAPOWER', 'TATASTLLP', 'TATASTEEL', 'TTML', 'TEAMLEASE', 'TECHM', 'NIACL', 'RAMCOCEM', 'THERMAX', 'THYROCARE', 'TIMKEN', 'TITAN', 'TORNTPHARM', 'TORNTPOWER', 'TRENT', 'TRIDENT', 'TRITURBINE', 'TIINDIA', 'UCOBANK', 'UFLEX', 'UPL', 'UTIAMC', 'UJJIVAN', 'UJJIVANSFB', 'ULTRACEMCO', 'UNIONBANK', 'UBL', 'MCDOWELL-N', 'VGUARD', 'VMART', 'VIPIND', 'VAIBHAVGBL', 'VAKRANGEE', 'VALIANTORG', 'VTL', 'VARROC', 'VBL', 'VEDL', 'VENKEYS', 'VINATIORGA', 'IDEA', 'VOLTAS', 'WABCOINDIA', 'WELCORP', 'WELSPUNIND', 'WESTLIFE', 'WHIRLPOOL', 'WIPRO', 'WOCKPHARMA', 'YESBANK', 'ZEEL', 'ZENSARTECH', 'ZYDUSLIFE', 'ZYDUSWELL', 'ECLERX']
+
 
 large_list = ['RELIANCE', 'TCS', 'HDFCBANK', 'INFY', 'HINDUNILVR', 'ICICIBANK', 'HDFC', 'BAJFINANCE', 'SBIN', 'WIPRO', 'BHARTIARTL', 'HCLTECH', 'KOTAKBANK', 'ASIANPAINT', 'DMART', 'ITC', 'LT', 'BAJAJFINSV', 'MARUTI', 'TITAN', 'ULTRACEMCO', 'AXISBANK', 'ADANIGREEN', 'SUNPHARMA', 'ADANITRANS', 'ATGL', 'ADANIENT', 'ONGC', 'TECHM', 'TATAMOTORS', 'JSWSTEEL', 'ADANIPORTS', 'POWERGRID', 'TATASTEEL', 'HINDZINC', 'HDFCLIFE', 'LTI', 'VEDL', 'PIDILITIND', 'DIVISLAB', 'NTPC', 'SBILIFE', 'ZOMATO', 'HINDALCO', 'GRASIM', 'IOC', 'M&M', 'DABUR', 'NYKAA', 'GODREJCP', 'SHREECEM', 'DLF', 'BAJAJ-AUTO', 'COALINDIA', 'SBICARD', 'HAVELLS', 'BRITANNIA', 'PAYTM', 'SIEMENS', 'BPCL', 'DRREDDY', 'ICICIPRULI', 'MINDTREE', 'INDIGO', 'CIPLA', 'BERGEPAINT', 'AMBUJACEM', 'APOLLOHOSP', 'NAUKRI', 'SRF', 'EICHERMOT', 'TATAPOWER', 'MOTHERSUMI', 'INDUSINDBK', 'ICICIGI', 'TATACONSUM', 'INDUSTOWER', 'IRCTC', 'MARICO', 'MCDOWELL-N', 'MPHASIS', 'GLAND', 'PEL', 'BAJAJHLDNG', 'MUTHOOTFIN', 'LODHA', 'LTTS', 'GAIL', 'UPL', 'TORNTPHARM', 'HDFCAMC', 'GODREJPROP', 'BEL', 'BOSCHLTD', 'PGHH', 'IDBI', 'CADILAHC', 'JSWENERGY', 'HEROMOTOCO', 'JUBLFOOD', 'ABB', 'PIIND', 'ASTRAL', 'STARHEALTH', 'PAGEIND', 'BALKRISIND', 'SAIL', 'IDEA', 'BIOCON', 'GUJGASLTD', 'SONACOMS', 'ALKEM', 'LUPIN', 'AUROPHARMA', 'MAXHEALTH', 'CHOLAFIN', 'POLICYBZR', 'BANKBARODA', 'UBL', 'TATACOMM', 'ACC', 'HINDPETRO', 'PNB', 'BANDHANBNK', 'HAL', 'TTML', 'VOLTAS', 'COLPAL', 'NMDC', 'JINDALSTEL', 'IOB', 'VBL', 'ADANIPOWER', 'TRENT', 'PERSISTENT', 'CONCOR', 'HONAUT', 'POLYCAB', 'TATAELXSI', 'AARTIIND', 'CANBK', 'ASHOKLEY', 'COFORGE', 'MINDAIND', 'DALBHARAT', 'YESBANK', 'OFSS', 'DEEPAKNTR', 'TIINDIA', 'MFSL', 'IGL', 'SRTRANSFIN', 'DIXON', 'RELAXO', 'AUBANK', 'BHARATFORG', 'PETRONET', 'KANSAINER', 'LALPATHLAB', 'PFC', 'OBEROIRLTY', 'MRF', 'NHPC', 'ZEEL', 'IDFCFIRSTB', 'ABCAPITAL', 'IRFC', 'TVSMOTOR', 'GLAXO', 'UNIONBANK', 'LAURUSLABS', '3MINDIA', 'SUPREMEIND', 'GMRINFRA', 'IPCALAB', 'CROMPTON', 'SCHAEFFLER', 'HATSUN', 'TRIDENT', 'ATUL', 'TORNTPOWER', 'FLUOROCHEM', 'CLEAN', 'RECLTD', 'CGPOWER', 'JKCEMENT', 'CUMMINSIND', 'ESCORTS', 'TANLA', 'ISEC', 'ABFRL', 'SUNDARMFIN', 'RUCHI', 'APLAPOLLO', 'SYNGENE', 'GICRE', 'BATAINDIA', 'INDHOTEL', 'ENDURANCE', 'RAMCOCEM', 'PFIZER', 'NIACL', 'EMAMILTD', 'KPRMILL', 'TATACHEM', 'IEX', 'FORTIS', 'WHIRLPOOL', 'COROMANDEL', 'SOLARINDS', 'NAM-INDIA', 'RAJESHEXPO', 'OIL', 'THERMAX', 'GRINDWELL', 'LINDEINDIA', 'GODREJIND', 'BANKINDIA', 'CRISIL', 'NAVINFLUOR', 'AAVAS', 'KAJARIACER', 'BHEL', 'VINATIORGA', 'LICHSGFIN']
 
@@ -158,9 +159,8 @@ if(st.button("Start Screening")):
                                         fin=low_list[-2]
                                     else:
                                         fin=low_list[-1]
-                                    risk,ep,sl,nos,tg1,tg2=risk_ana(high_list[-1]+1,fin-1)
+                                    risk,ep,sl,nos,tg1,tg2=risk_ana(high_list[-1]+1,fin-1)          
                                     st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:01 -- "+str(tg1)+"\n"+"TARGET 1:02 -- "+str(tg2))
-    
                                 else:
                                     pass
     
@@ -181,13 +181,13 @@ if(st.button("Start Screening")):
                                         fin=low_list[-2]
                                     else:
                                         fin=low_list[-1]
-                                    risk,ep,sl,nos,tg1,tg2=risk_ana(high_list[-1]+1,fin-1)
-                                    st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:01 -- "+str(tg1)+"\n"+"TARGET 1:02 -- "+str(tg2))
+                                    risk,ep,sl,nos,tg1,tg2=risk_ana(high_list[-1]+1,fin-1)          
+                                    st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:01 -- "+str(tg1)+"\n"+"TARGET 1:02 -- "+str(tg2),key="txt2")
     
-            except:
-                continue            
+            except Exception as e:
+                pass            
         my_bar.empty()
-        st.balloons()
+        st.balloons()    
         
     
     elif strgy == "44MA":
@@ -267,8 +267,8 @@ if(st.button("Start Screening")):
                         pass
                 else:
                     pass
-            except:
-                continue        
+            except Exception as e:
+                pass        
         my_bar.empty()
         st.balloons()    
     
@@ -278,7 +278,6 @@ if(st.button("Start Screening")):
         j=0
         my_bar = st.progress(0)
         for i in final_list:
-            download_list={}
             j+=1
             percent_complete=j/len(final_list)
             my_bar.progress(percent_complete)    
@@ -316,16 +315,14 @@ if(st.button("Start Screening")):
                             fin=low_list[-1]
                         risk,ep,sl,nos,tg1=risk_ana(high_list[-1]+1,fin-1,"BB")          
                         st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:03 -- "+str(tg1))
-                        
                     else:
                         pass
                 else:
                     pass
-            except:
-                continue
+            except Exception as e:
+                pass
         my_bar.empty()
         st.balloons()
-        
         
     elif strgy == "ATH":
         j=0
@@ -342,7 +339,7 @@ if(st.button("Start Screening")):
                 per_close = (hgh-list(y['Close'])[-1])/(list(y['Close'])[-1]) 
                 if (hgh == list(y['Close'])[-1]) or (0<per_close and per_close<0.05): 
                     st.write('[{0}](https://in.tradingview.com/chart/YV59lPqR/?symbol=NSE%3A{0})'.format(i))
-            except:
+            except Exception as e:
                 pass
         my_bar.empty()
         st.balloons()    
@@ -434,8 +431,8 @@ if(st.button("Start Screening")):
                                     fin=last_low
                                 risk,ep,sl,nos,tg1,tg2=risk_ana(last_high+1,fin-1)         
                                 st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:01 -- "+str(tg1)+"\n"+"TARGET 1:02 -- "+str(tg2))
-            except:
-                continue
+            except Exception as e:
+                pass
         my_bar.empty()
         st.balloons()    
 
@@ -526,8 +523,8 @@ if(st.button("Start Screening")):
                                     fin=last_low
                                 risk,ep,sl,nos,tg1,tg2=risk_ana(fin-1,last_high+1)         
                                 st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:01 -- "+str(tg1)+"\n"+"TARGET 1:02 -- "+str(tg2))
-            except:
-                continue
+            except Exception as e:
+                pass
         my_bar.empty()
         st.balloons()    
     elif strgy == "15 MIN BUY (44MA)":
@@ -609,8 +606,8 @@ if(st.button("Start Screening")):
                         pass
                 else:
                     pass
-            except:
-                continue        
+            except Exception as e:
+                pass 
         my_bar.empty()
         st.balloons()    
     
@@ -661,7 +658,7 @@ if(st.button("Start Screening")):
                                     fin=last_low2
                                 else:
                                     fin=last_low
-                                risk,ep,sl,nos,tg1,tg2=risk_ana(fin-1,last_high+1)
+                                risk,ep,sl,nos,tg1,tg2=risk_ana(last_high+1,fin-1)
                                 st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:01 -- "+str(tg1)+"\n"+"TARGET 1:02 -- "+str(tg2))
                         
                         elif ((((0<=last_low-last_close)and(1>=last_low-last_close))and((last_close-last_open)*2 <=(last_high-last_close))) or 
@@ -681,7 +678,7 @@ if(st.button("Start Screening")):
                                     fin=last_low2
                                 else:
                                     fin=last_low
-                                risk,ep,sl,nos,tg1,tg2=risk_ana(fin-1,last_high+1)
+                                risk,ep,sl,nos,tg1,tg2=risk_ana(last_high+1,fin-1)
                                 st.text("Risk-- "+str(risk)+"\n"+"ENTRY PRICE-- "+str(ep)+"\n"+"Stop Loss-- "+str(sl)+"\n"+"NO OF SHARES-- "+str(nos)+"\n"+"TARGET 1:01 -- "+str(tg1)+"\n"+"TARGET 1:02 -- "+str(tg2))
                         else:
                             pass
@@ -689,11 +686,12 @@ if(st.button("Start Screening")):
                         pass
                 else:
                     pass
-            except:
-                continue        
+            except Exception as e:
+                pass
+                    
         my_bar.empty()
         st.balloons()
-    elif strgy == "Rising":
+    elif strgy == "Trial":
         j=0
         my_bar = st.progress(0)
         for i in final_list:
@@ -737,5 +735,5 @@ else:
     st.text("click on start Screening")      
 
 
-#st.secrets["DB_USERNAME"]
-#st.secrets["DB_TOKEN"]
+st.secrets["DB_USERNAME"]
+st.secrets["DB_TOKEN"]
